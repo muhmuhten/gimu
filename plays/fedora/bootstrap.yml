@@ -1,0 +1,5 @@
+- hosts: fedora
+  pre_tasks:
+    - name: fix module 'yum' for dnf compatibility
+      command: dnf install -y yum-utils creates=/usr/bin/repoquery
+      when: ansible_distribution_major_version|int >= 22
