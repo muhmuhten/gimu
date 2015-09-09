@@ -1,0 +1,15 @@
+---
+- hosts: coreos
+  gather_facts: no # there might be no python
+  tasks:
+    - name: bootstrap python
+      become: yes
+      raw: |
+        # heredoc *does not* work properly in module raw
+        printf '%s\n' \
+          '#!/bin/bash' \
+          'bind=(/home)' \
+          'bind+=({{python_binds|default("")}})' \
+          'exec toolbox "${bind[@]/#/--bind=}" -q python "$@"' \
+        | install -D /dev/stdin /run/ansible/python
+        exec rsync -cp /run/ansible/python {{ansible_python_interpreter}}
