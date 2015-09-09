@@ -21,6 +21,7 @@ quirks which require special attention:
 - The core `yum` and `dnf` modules handle the toolboxed installation poorly.
 - **The host rootfs is mounted at `/media/root`.** In general, modifications to
   the filesystem will be persisted *in the toolbox*; while this may be useful
-  for working with the toolbox. By default, we bind `/home`; if needed, you can
-  specify further paths as a space-separated list (it goes into a `bash` array
-  directly) to bind in the `python_binds` fact.
+  for working with the toolbox, it is also generally incompatible with other
+  (not CoreOS) installations. By default, we bind `/home` because ansible needs
+  it; if desired you can specify further paths to bind in `python_binds` as a
+  space-separated list suitable for dropping to a `bash` array
