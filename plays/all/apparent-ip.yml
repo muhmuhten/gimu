@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+    - action: "{{ansible_pkg_mgr}} name=python-httplib2"
+    - uri: url=https://icanhazip.com return_content=yes
+      register: apparent_ip
+    - fail: msg={{apparent_ip.content}}
