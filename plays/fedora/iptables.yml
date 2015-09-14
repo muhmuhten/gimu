@@ -1,6 +1,8 @@
 - hosts: fedora
   tasks:
     - action: "{{ansible_pkg_mgr}} name=iptables-services"
+      become: yes
     - command: >
         systemctl enable iptables.service
         creates=/etc/systemd/system/basic.target.wants/iptables.service
+      become: yes
