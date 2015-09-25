@@ -1,0 +1,16 @@
+- hosts: fedora
+  vars:
+    ansible_ssh_port: 22
+  tasks:
+    - command: semanage port -at ssh_port_t -p tcp 3622
+      failed_when: no
+      register: semanage_res
+      changed_when: semanage_res.rc == 0
+    - name: copy sshd_config
+      synchronize:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        rsync_opts: --chown=0:0
+      register: sshd_res
+    - service: name=sshd state=reloaded
+      when: semanage_res.changed or sshd_res.changed
