@@ -1,5 +1,5 @@
 ---
-- hosts: fedora
+- hosts: all
   vars:
     ansible_ssh_user: root
   tasks:
