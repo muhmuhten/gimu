@@ -25,7 +25,7 @@
         state: mounted
     - service: name=docker enabled=yes state=started
   handlers:
-    - name: reload docker
-      service: name=docker state=reloaded
     - name: reload systemd
       command: systemctl daemon-reload
+    - name: reload docker
+      service: name=docker state=restarted
