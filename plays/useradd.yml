@@ -14,13 +14,8 @@
       changed_when: no
       register: ssh_keys
       failed_when: ssh_keys.stdout == ""
-    - name: set authorized_keys for root
-      authorized_key:
-        user: root
-        exclusive: yes
-        key: "{{ssh_keys.stdout}}"
-    - name: set authorized_keys for user {{whoami.stdout}}
-      authorized_key:
-        user: "{{whoami.stdout}}"
-        exclusive: yes
-        key: "{{ssh_keys.stdout}}"
+    - name: set authorized_keys
+      authorized_key: user={{item}} exclusive=yes key={{ssh_keys.stdout}}
+      with_items:
+        - root
+        - "{{whoami.stdout}}"
