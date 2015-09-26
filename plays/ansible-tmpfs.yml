@@ -1,0 +1,13 @@
+---
+- hosts: fedora
+  vars:
+    ansible_ssh_user: root
+  tasks:
+    - name: mount tmpfs to /root/.ansible
+      mount:
+        name: /root/.ansible
+        src: tmpfs
+        fstype: tmpfs
+        opts: size=20m,mode=750
+        state: mounted
+      notify: reload docker
