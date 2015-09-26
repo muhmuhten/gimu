@@ -1,0 +1,11 @@
+- hosts: fedora
+  vars:
+    ansible_ssh_user: root
+  tasks:
+    - name: merge sudoers.d
+      synchronize:
+        src: files/sudoers.d
+        dest: /etc
+        rsync_opts:
+          - --chown=0:0
+          - --chmod=D750,F440
