@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/libexec/iptables/ip6tables.init stop

@@ -1,0 +1,4 @@
+#!/bin/sh
+cat /etc/iptables/tables/* > /run/iptables
+[ -h /etc/sysconfig/iptables ] || ln -sf /run/iptables /etc/sysconfig
+exec /usr/libexec/iptables/iptables.init start

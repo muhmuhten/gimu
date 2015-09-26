@@ -1,0 +1,11 @@
+[Unit]
+Description=iptables and ip6tables firewalls
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/run-parts /etc/iptables/start
+ExecStop=/usr/bin/run-parts /etc/iptables/stop
+
+[Install]
+WantedBy=basic.target

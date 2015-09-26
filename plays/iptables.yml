@@ -1,7 +1,33 @@
 ---
 - hosts: fedora
-  become: yes
+  vars:
+    ansible_ssh_user: root
   tasks:
     - action: "{{ansible_pkg_mgr}} name=iptables-services"
+    - name: mask ip6tables service file
+      command: >
+        systemctl mask ip6tables.service
+        creates=/etc/systemd/system/ip6tables.service
+    - name: override iptables service file
+      synchronize:
+        src: files/iptables.service
+        dest: /etc/systemd/system
+        rsync_opts: --chown=0:0
+      notify:
+        - reload systemd
+        - reload iptables
+    - name: merge iptables
+      synchronize:
+        src: files/iptables
+        dest: /etc
+        rsync_opts:
+          - --chown=0:0
+          - --chmod=o=
+      notify:
+        - reload iptables
     - service: name=iptables enabled=yes state=started
-    - service: name=ip6tables enabled=yes state=started
+  handlers:
+    - name: reload iptables
+      service: name=iptables state=restarted
+    - name: reload systemd
+      command: systemctl daemon-reload
