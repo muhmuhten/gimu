@@ -1,0 +1,27 @@
+---
+- hosts: fedora
+  vars:
+    ansible_ssh_user: root
+  tasks:
+    - action: "{{ansible_pkg_mgr}} name=docker"
+    - name: override docker service file
+      synchronize:
+        src: files/docker.service
+        dest: /etc/systemd/system
+        rsync_opts: --chown=0:0
+      notify: reload systemd
+    - action: "{{ansible_pkg_mgr}} name=btrfs-progs"
+    - name: create docker btrfs loopfile
+      shell: >
+        truncate -s 50G docker.btrfs && mkfs.btrfs docker.btrfs
+        creates=docker.btrfs
+    - name: mount docker btrfs loopfile
+      mount:
+        name: /var/lib/docker
+        src: /root/docker.btrfs
+        fstype: btrfs
+        state: mounted
+    - service: name=docker enabled=yes state=started
+  handlers:
+    - name: reload systemd
+      command: systemctl daemon-reload
