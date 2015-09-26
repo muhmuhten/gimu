@@ -4,6 +4,7 @@
     ansible_ssh_user: root
   tasks:
     - action: "{{ansible_pkg_mgr}} name=docker"
+      notify: reload docker
     - name: override docker service file
       synchronize:
         src: files/docker.service
@@ -23,9 +24,9 @@
         src: /root/docker.btrfs
         fstype: btrfs
         state: mounted
-    - service: name=docker enabled=yes state=started
+      notify: reload docker
   handlers:
     - name: reload systemd
       command: systemctl daemon-reload
     - name: reload docker
-      service: name=docker state=restarted
+      service: name=docker enabled=yes state=restarted
