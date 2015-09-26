@@ -4,3 +4,4 @@
   tasks:
     - action: "{{ansible_pkg_mgr}} name=iptables-services"
     - service: name=iptables enabled=yes state=started
+    - service: name=ip6tables enabled=yes state=started
