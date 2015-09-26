@@ -6,7 +6,9 @@ After=network.target
 [Service]
 Type=notify
 MountFlags=slave
-ExecStart=/usr/bin/docker -d -G wheel
+ExecStart=/usr/bin/docker -d -G wheel \
+          --iptables=false --userland-proxy=false \
+          --ipv6 --ip=::1 --bip=10.9.3.3/16 --fixed-cidr=10.9.4.1/22
 
 [Install]
 WantedBy=multi-user.target
