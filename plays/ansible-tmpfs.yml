@@ -1,7 +1,5 @@
 ---
 - hosts: fedora
-  vars:
-    ansible_ssh_user: root
   tasks:
     - name: mount tmpfs to /root/.ansible
       mount:

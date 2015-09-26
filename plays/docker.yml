@@ -1,7 +1,5 @@
 ---
 - hosts: fedora
-  vars:
-    ansible_ssh_user: root
   tasks:
     - action: "{{ansible_pkg_mgr}} name=docker"
       notify: reload docker
