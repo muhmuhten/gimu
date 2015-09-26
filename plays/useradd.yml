@@ -3,7 +3,24 @@
   vars:
     ansible_ssh_user: root
   tasks:
-    - local_action: command whoami
+    - name: retrieve local username
+      local_action: command whoami
       changed_when: no
       register: whoami
-    - user: name={{whoami.stdout}} groups=wheel
+    - name: create user {{whoami.stdout}}
+      user: name={{whoami.stdout}} groups=wheel
+    - name: retrieve authorized keys
+      local_action: shell cat files/authorized_keys
+      changed_when: no
+      register: ssh_keys
+      failed_when: ssh_keys.stdout == ""
+    - name: set authorized_keys for root
+      authorized_key:
+        user: root
+        exclusive: yes
+        key: "{{ssh_keys.stdout}}"
+    - name: set authorized_keys for user {{whoami.stdout}}
+      authorized_key:
+        user: "{{whoami.stdout}}"
+        exclusive: yes
+        key: "{{ssh_keys.stdout}}"
