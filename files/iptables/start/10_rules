@@ -1,0 +1,13 @@
+#!/bin/sh
+for V in iptables ip6tables; do
+  sed "1,/^exit /d" "$0" > "/run/$V"
+  [ -h "/etc/sysconfig/$V" ] || ln -sf "/run/$V" /etc/sysconfig
+  "/usr/libexec/iptables/$V.init" start
+done
+exit 0
+
+*nat
+-A PREROUTING -i docker0 -j CONNMARK --or-mark 01
+-A PREROUTING -i tun0 -j CONNMARK --or-mark 01
+-A POSTROUTING ! -o docker0 -m connmark --mark 01/01 -j MASQUERADE
+COMMIT

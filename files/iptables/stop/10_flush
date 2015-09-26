@@ -1,0 +1,4 @@
+#!/bin/sh
+for V in iptables ip6tables; do
+  "/usr/libexec/iptables/$V.init" stop
+done

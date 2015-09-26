@@ -16,18 +16,17 @@
       notify:
         - reload systemd
         - reload iptables
-    - name: merge iptables
+    - name: copy iptables config
       synchronize:
         src: files/iptables
         dest: /etc
+        delete: yes
         rsync_opts:
           - --chown=0:0
           - --chmod=o=
-      notify:
-        - reload iptables
-    - service: name=iptables enabled=yes state=started
+      notify: reload iptables
   handlers:
     - name: reload systemd
       command: systemctl daemon-reload
     - name: reload iptables
-      service: name=iptables state=restarted
+      service: name=iptables enabled=yes state=restarted
