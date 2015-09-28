@@ -1,0 +1,3 @@
+authorized_keys: |
+  # this is my public key. you probably don't want this default.
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE2ZHAJlT0gLVh90SiQUTEDOGyG9iSBvJcd/v43Ip0by en@koizumi
