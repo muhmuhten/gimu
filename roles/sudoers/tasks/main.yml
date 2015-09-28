@@ -1,0 +1,2 @@
+- name: merge sudoers.d
+  copy: src=. dest=/etc/sudoers.d mode=440
