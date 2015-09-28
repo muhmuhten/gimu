@@ -1,0 +1,14 @@
+- name: retrieve local username
+  become: no
+  local_action: command whoami
+  changed_when: no
+  register: host_whoami
+
+- name: create user {{host_whoami.stdout}}
+  user: name={{host_whoami.stdout}} groups=wheel
+
+- name: set authorized_keys
+  authorized_key: user={{item}} exclusive=yes key={{authorized_keys}}
+  with_items:
+    - root
+    - "{{host_whoami.stdout}}"
