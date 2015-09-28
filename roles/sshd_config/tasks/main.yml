@@ -1,0 +1,10 @@
+- name: selinux allow ssh port
+  command: semanage port -at ssh_port_t -p tcp 3622
+  failed_when: no
+  register: semanage_res
+  changed_when: semanage_res.rc == 0
+  notify: reload sshd
+
+- name: copy sshd_config
+  copy: src=sshd_config dest=/etc/ssh mode=640 validate="sshd -tf %s"
+  notify: reload sshd
