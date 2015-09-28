@@ -1,0 +1,24 @@
+- action: "{{ansible_pkg_mgr}} name=docker"
+  notify: reload docker
+
+- name: override docker service file
+  copy: src=docker.service dest=/etc/systemd/system
+  notify:
+    - reload systemd
+    - reload docker
+
+- action: "{{ansible_pkg_mgr}} name=btrfs-progs"
+
+- name: create docker btrfs loopfile
+  shell: |
+    truncate -s {{docker_btrfs_size}} /root/docker.btrfs
+    mkfs.btrfs /root/docker.btrfs
+    creates=/root/docker.btrfs
+
+- name: mount docker btrfs loopfile
+  mount:
+    name: /var/lib/docker
+    src: /root/docker.btrfs
+    fstype: btrfs
+    state: mounted
+  notify: reload docker
