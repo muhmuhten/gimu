@@ -1,0 +1,5 @@
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: reload iptables
+  service: name=iptables enabled=yes state=restarted

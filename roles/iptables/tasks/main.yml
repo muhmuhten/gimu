@@ -1,0 +1,16 @@
+- action: "{{ansible_pkg_mgr}} name=iptables-services"
+
+- name: mask ip6tables service file
+  command: >
+    systemctl mask ip6tables.service
+    creates=/etc/systemd/system/ip6tables.service
+
+- name: override iptables service file
+  copy: src=iptables.service dest=/etc/systemd/system
+  notify:
+    - reload systemd
+    - reload iptables
+
+- name: copy iptables config
+  copy: src=iptables dest=/etc group=wheel directory_mode=750
+  notify: reload iptables

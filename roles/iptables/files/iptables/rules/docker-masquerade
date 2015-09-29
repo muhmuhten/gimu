@@ -1,0 +1,6 @@
+#!/bin/cat
+*nat
+-A PREROUTING -i docker0 -j CONNMARK --or-mark 01
+-A PREROUTING -i tun0 -j CONNMARK --or-mark 01
+-A POSTROUTING ! -o docker0 -m connmark --mark 01/01 -j MASQUERADE
+COMMIT

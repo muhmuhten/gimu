@@ -1,0 +1,5 @@
+#!/bin/sh
+for V in iptables ip6tables; do
+  "/usr/libexec/iptables/$V.init" stop > /dev/null
+  find /etc/iptables/rules -type f -exec perl {} \; | "$V-restore" -n
+done
