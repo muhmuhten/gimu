@@ -1,0 +1,6 @@
+- hosts: all
+  vars:
+    become: yes
+  become: "{{become}}"
+  roles:
+    - role: "{{role}}"
