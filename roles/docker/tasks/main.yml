@@ -7,15 +7,18 @@
     - reload systemd
     - reload docker
 
+- name: create docker blockdev
+  shell: |
+    truncate -s {{docker_btrfs_size}} {{docker_btrfs_path}}
+    creates={{docker_btrfs_path}}
+
 - action: "{{ansible_pkg_mgr}} name=btrfs-progs"
 
-- name: create docker btrfs loopfile
-  shell: |
-    truncate -s {{docker_btrfs_size}} /root/docker.btrfs
-    mkfs.btrfs /root/docker.btrfs
-    creates=/root/docker.btrfs
+- name: format docker blockdev as btrfs
+  filesystem: fstype=btrfs force=yes dev={{docker_btrfs_path}}
+  notify: reload docker
 
-- name: mount docker btrfs loopfile
+- name: mount docker btrfs blockdev
   mount:
     name: /var/lib/docker
     src: /root/docker.btrfs

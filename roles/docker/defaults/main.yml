@@ -1,1 +1,2 @@
 docker_btrfs_size: 20G
+docker_btrfs_path: /root/docker.btrfs
