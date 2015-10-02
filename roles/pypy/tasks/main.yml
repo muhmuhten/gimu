@@ -1,0 +1,25 @@
+- name: check for /opt
+  become: no
+  raw: test -d /opt
+  failed_when: no
+  register: check_opt
+
+- name: create /opt
+  when: check_opt.rc > 0
+  raw: mkdir -p /opt
+  changed_when: yes
+
+- name: check for pypy
+  become: no
+  raw: test -e /opt/{{pypy_dir}}
+  failed_when: no
+  register: check_pypy
+
+- name: fetch portable pypy
+  when: check_pypy.rc > 0
+  raw: curl -LfsS "{{pypy_url}}" | tar xvjC /opt
+  changed_when: yes
+
+- set_fact: ansible_python_interpreter=/opt/{{pypy_dir}}/bin/pypy
+- file: path=/opt/bin state=directory
+- file: path=/opt/bin/pypy state=link src={{ansible_python_interpreter}}

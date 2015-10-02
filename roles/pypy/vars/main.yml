@@ -1,0 +1,2 @@
+pypy_dir: pypy-{{pypy_version}}-linux_x86_64-portable
+pypy_url: https://bitbucket.org/squeaky/portable-pypy/downloads/{{pypy_dir}}.tar.bz2
