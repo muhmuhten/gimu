@@ -1,0 +1,6 @@
+# {{ansible_managed}}
+
+# return if noninteractive
+[[ $- != *i* ]] && return
+
+HISTSIZE=

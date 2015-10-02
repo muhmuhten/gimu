@@ -1,0 +1,4 @@
+# {{ansible_managed}}
+
+# don't mess up the terminal when it's useless, for sanity's sake
+[ "$TERM" = linux ] && clear
