@@ -1,0 +1,12 @@
+- name: check for unwritable links
+  become: no
+  shell: test -f .{{item}} -a ! -w .{{item}} && rm -f .{{item}}
+  failed_when: no
+  register: check_link
+  changed_when: check_link.rc <= 0
+  with_items: dotfiles
+
+- name: copy dotfiles
+  become: no
+  template: src={{item}} dest=~/.{{item}}
+  with_items: dotfiles
