@@ -1,0 +1,36 @@
+- vars:
+    ansible_ssh_user: cow
+    ansible_ssh_port: 22
+    ansible_python_interpreter: /usr/bin/python
+    keys_path: /mnt/home/core/.ssh/authorized_keys
+    dest: /dev/sda
+    args: -C alpha -v
+  hosts: "{{hosts}}" # dangerous, require explicit -e hosts=
+  become: yes
+  tasks:
+    - name: explode if no ssh key provided
+      become: no
+      local_action: command test -n {{keys_source}}
+      changed_when: no
+
+    - name: fail if the booted image was bootstrapped (not a rescue system)
+      command: test -e /opt/bin/pypy
+      changed_when: no
+      register: check_pypy
+      failed_when: check_pypy.rc == 0
+
+    - name: fetch coreos-install script
+      get_url:
+        url: https://raw.github.com/coreos/init/master/bin/coreos-install
+        dest: /usr/local/bin/
+        mode: 0755
+
+    - name: reinstall coreos
+      shell: >
+        coreos-install -d {{dest}} {{args}} | tee output.log
+        creates=output.log
+
+    - mount: name=/mnt fstype=ext4 src=LABEL=ROOT state=mounted
+
+    - command: wget -qO {{keys_path}} {{keys_source}} creates={{keys_path}}
+    - file: path={{keys_path}} owner=500 group=500
