@@ -1,7 +1,7 @@
 - action: setup
-- when: ansible_fqdn == inventory_hostname
+- when: ansible_fqdn != inventory_hostname
   block:
     - name: match hostname
-      action: command hostnamectl set-hostname {{inventory_hostname}}
+      command: hostnamectl set-hostname {{inventory_hostname}}
       become: yes
     - action: setup
