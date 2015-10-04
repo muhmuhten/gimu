@@ -5,10 +5,6 @@
     - reload systemd
     - restart docker
 
-- name: disable docker.socket
-  become: yes
-  service: name=docker.socket enabled=no state=stopped
-
 - name: create docker blockdev
   become: yes
   command: >
