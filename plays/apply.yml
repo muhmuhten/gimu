@@ -1,7 +1,7 @@
 - vars:
     hosts: all
     gather_facts: no
-    become: yes
+    become: no
   hosts: "{{hosts}}"
   gather_facts: "{{gather_facts}}"
   become: "{{become}}"
