@@ -1,30 +1,7 @@
-- name: copy docker service file
-  become: yes
-  copy: src=docker.service dest=/etc/systemd/system
-  notify:
-    - reload systemd
-    - restart docker.service
+- when: ansible_lsb is defined and ansible_lsb.id == "CoreOS"
+  set_fact: docker_include=coreos
 
-- name: disable docker.socket
-  become: yes
-  service: name=docker.socket enabled=no state=stopped
+- when: docker_include is not defined
+  fail: msg="unsupported system"
 
-- name: create docker blockdev
-  become: yes
-  command: >
-    truncate -s {{docker_btrfs_size}} {{docker_btrfs_path}}
-    creates={{docker_btrfs_path}}
-
-- name: format docker blockdev as btrfs
-  become: yes
-  filesystem: fstype=btrfs force=yes dev={{docker_btrfs_path}}
-  notify: restart docker.service
-
-- name: mount docker btrfs blockdev
-  become: yes
-  mount:
-    name: /var/lib/docker
-    src: /root/docker.btrfs
-    fstype: btrfs
-    state: mounted
-  notify: restart docker.service
+- include: "{{docker_include}}.yml"

@@ -2,6 +2,6 @@
   become: yes
   command: systemctl daemon-reload
 
-- name: restart docker.service
+- name: restart docker
   become: yes
   service: name=docker enabled=yes state=restarted
