@@ -10,7 +10,7 @@
   tasks:
     - name: explode if no ssh key provided
       become: no
-      local_action: command test -n {{keys_source}}
+      local_action: command test -n "{{authorized_keys}}"
       changed_when: no
 
     - name: fail if the booted image was bootstrapped (not a rescue system)
@@ -32,5 +32,9 @@
 
     - mount: name=/mnt fstype=ext4 src=LABEL=ROOT state=mounted
 
-    - command: wget -qO {{keys_path}} {{keys_source}} creates={{keys_path}}
-    - file: path={{keys_path}} owner=500 group=500
+    - name: copy authorized_keys
+      copy:
+        dest: "{{keys_path}}"
+        owner: 500
+        group: 500
+        content: "{{authorized_keys}}"
