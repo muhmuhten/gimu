@@ -1,5 +1,5 @@
 - name: check for /opt
-  raw: test -d /opt
+  raw: test -e /opt
   failed_when: no
   register: check_opt
 
