@@ -1,4 +1,4 @@
-- when: ansible_lsb is defined and ansible_lsb.id == "CoreOS"
+- when: ansible_distribution == "CoreOS"
   set_fact: docker_include=coreos
 
 - when: docker_include is not defined

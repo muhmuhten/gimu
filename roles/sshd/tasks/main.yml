@@ -1,4 +1,4 @@
-- when: ansible_lsb is defined and ansible_lsb.id == "CoreOS"
+- when: ansible_distribution == "CoreOS"
   set_fact: include_file=coreos.yml
 
 - when: include_file is not defined
