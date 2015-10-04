@@ -1,0 +1,14 @@
+- vars:
+    hosts: coreos
+    become: no
+  hosts: "{{hosts}}"
+  gather_facts: no
+
+  roles:
+    - raw_python
+    - hostname
+    - coreos_config
+
+    - sshd
+    - docker
+    - dotfiles

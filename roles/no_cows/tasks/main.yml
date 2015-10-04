@@ -1,2 +1,0 @@
-- user: name={{cow_user}} state=absent
-  become: yes
