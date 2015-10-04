@@ -1,0 +1,6 @@
+- name: copy dummy locksmithd service file
+  become: yes
+  copy: src=mockout.service dest=/etc/systemd/system/locksmithd.service
+  notify:
+    - reload systemd
+    - restart locksmithd

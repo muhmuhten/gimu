@@ -10,5 +10,7 @@
     - coreos_config
 
     - sshd
+    - locksmithd
     - docker
+
     - dotfiles

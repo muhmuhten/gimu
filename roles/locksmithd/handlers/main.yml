@@ -1,0 +1,7 @@
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload
+
+- name: restart locksmithd
+  become: yes
+  service: name=locksmithd state=restarted
