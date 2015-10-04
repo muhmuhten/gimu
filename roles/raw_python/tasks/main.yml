@@ -1,0 +1,8 @@
+- name: check for python
+  raw: test -x {{ansible_python_interpreter}}
+  failed_when: no
+  register: check_python
+
+- name: fetch bootstrap pypy
+  when: check_python.rc > 0
+  include: pypy.yml
