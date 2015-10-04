@@ -1,0 +1,11 @@
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload
+
+- name: restart sshd units
+  become: yes
+  command: systemctl restart sshd.service sshd.socket
+  failed_when: no #expect sshd to drop out at this point
+
+- name: ping
+  action: ping

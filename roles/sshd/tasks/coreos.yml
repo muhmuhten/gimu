@@ -1,0 +1,7 @@
+- name: copy dummy sshd.socket service file
+  become: yes
+  copy: src=sshd.socket dest=/etc/systemd/system
+  notify:
+    - reload systemd
+    - restart sshd units
+    - ping

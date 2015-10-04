@@ -1,0 +1,10 @@
+[Unit]
+Description=OpenSSH Dummy Socket
+
+[Socket]
+ListenStream=/var/run/sshd.sock
+Accept=yes
+RemoveOnStop=yes
+
+[Install]
+WantedBy=sockets.target
