@@ -20,8 +20,9 @@
   raw: curl -LfsS "{{pypy_url}}" | tar xvjC /opt
   changed_when: yes
 
-- set_fact: ansible_python_interpreter=/opt/{{pypy_dir}}/bin/pypy
-- file: path=/opt/bin state=directory recurse=yes
+- name: install interpreter link
   become: yes
-- file: path=/opt/bin/pypy state=link src={{ansible_python_interpreter}}
-  become: yes
+  raw: |
+    install -D /dev/null {{ansible_python_interpreter}}
+    ln -fs /opt/{{pypy_dir}}/bin/pypy {{ansible_python_interpreter}}
+  changed_when: yes
