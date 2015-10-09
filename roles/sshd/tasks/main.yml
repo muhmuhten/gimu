@@ -1,7 +1,0 @@
-- when: ansible_distribution == "CoreOS"
-  set_fact: include_file=coreos.yml
-
-- when: include_file is not defined
-  fail: msg="unsupported system"
-
-- include: "{{include_file}}"

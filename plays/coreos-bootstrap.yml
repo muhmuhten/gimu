@@ -9,7 +9,6 @@
     - hostname
     - coreos_config
 
-    - sshd
     - locksmithd
     - docker
 
