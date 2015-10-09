@@ -1,5 +1,2 @@
-- when: ansible_lsb.id != "CoreOS"
-  fail: msg="unsupported system, coreos only"
-
 - include: loop.yml item=iptables
 - include: loop.yml item=ip6tables

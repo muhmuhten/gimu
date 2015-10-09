@@ -1,6 +1,3 @@
-- when: ansible_lsb.id != "CoreOS"
-  fail: msg="unsupported system, coreos only"
-
 - name: copy docker service file
   become: yes
   copy: src=docker.service dest=/etc/systemd/system

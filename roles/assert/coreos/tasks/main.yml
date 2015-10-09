@@ -1,0 +1,2 @@
+- when: ansible_lsb is not defined or ansible_lsb.id != "CoreOS"
+  fail: msg="unsupported distribution; coreos only"
