@@ -1,7 +1,29 @@
-- when: ansible_distribution == "CoreOS"
-  set_fact: docker_include=coreos
+- when: ansible_distribution != "CoreOS"
+  fail: msg="unsupported system, coreos only"
 
-- when: docker_include is not defined
-  fail: msg="unsupported system"
+- name: copy docker service file
+  become: yes
+  copy: src=docker.service dest=/etc/systemd/system
+  notify:
+    - reload systemd
+    - restart docker
 
-- include: "{{docker_include}}.yml"
+- name: create docker blockdev
+  become: yes
+  command: >
+    truncate -s {{docker_btrfs_size}} {{docker_btrfs_path}}
+    creates={{docker_btrfs_path}}
+
+- name: format docker blockdev as btrfs
+  become: yes
+  filesystem: fstype=btrfs force=yes dev={{docker_btrfs_path}}
+  notify: restart docker
+
+- name: mount docker btrfs blockdev
+  become: yes
+  mount:
+    name: /var/lib/docker
+    src: /root/docker.btrfs
+    fstype: btrfs
+    state: mounted
+  notify: restart docker
