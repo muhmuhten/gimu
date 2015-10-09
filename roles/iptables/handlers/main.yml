@@ -1,0 +1,7 @@
+- name: reload iptables
+  become: yes
+  service: name=iptables-restore enabled=yes state=restarted
+
+- name: reload ip6tables
+  become: yes
+  service: name=ip6tables-restore enabled=yes state=restarted

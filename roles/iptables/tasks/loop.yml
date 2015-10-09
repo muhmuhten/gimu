@@ -1,0 +1,4 @@
+- name: copy {{item}} rules
+  template: src={{item}}/rules-save dest=/var/lib/{{item}}/rules-save
+  notify: reload {{item}}
+  become: yes
