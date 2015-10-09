@@ -7,6 +7,8 @@
   roles:
     - raw_python
     - hostname
+
+    - authorized_keys
     - coreos_config
 
     - locksmithd
