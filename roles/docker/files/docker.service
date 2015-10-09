@@ -7,9 +7,8 @@ Requires=docker.socket early-docker.target
 [Service]
 Type=notify
 MountFlags=slave
-ExecStart=/usr/lib/coreos/dockerd daemon \
-          --iptables=false --userland-proxy=false \
-          --ipv6 --ip=::1 --bip=10.9.3.3/16 --fixed-cidr=10.9.4.1/22
+ExecStart=/usr/lib/coreos/dockerd daemon --iptables=false \
+          --bip=10.9.3.3/16 --fixed-cidr=10.9.4.1/22
 
 [Install]
 WantedBy=multi-user.target
