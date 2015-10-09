@@ -1,3 +1,6 @@
+- become: yes
+  file: path=/opt/bin recurse=yes state=directory
+
 - name: copy pipework
   become: yes
   copy: src=pipework dest=/opt/bin mode=755
