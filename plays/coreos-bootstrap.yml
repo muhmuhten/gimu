@@ -10,6 +10,7 @@
     - coreos_config
 
     - locksmithd
+    - iptables
     - docker
 
     - dotfiles
