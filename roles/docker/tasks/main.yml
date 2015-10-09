@@ -1,4 +1,4 @@
-- when: ansible_distribution != "CoreOS"
+- when: ansible_lsb.id != "CoreOS"
   fail: msg="unsupported system, coreos only"
 
 - name: copy docker service file
