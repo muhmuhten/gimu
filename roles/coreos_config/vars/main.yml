@@ -1,2 +1,0 @@
-update_conf: |
-  GROUP={{update_group}}
