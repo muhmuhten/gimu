@@ -1,3 +1,4 @@
 dotfiles:
   - bashrc
   - bash_logout
+  - ssh/config #ok: authorized_keys must exist anyway
