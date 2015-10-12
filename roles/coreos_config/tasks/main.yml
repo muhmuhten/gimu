@@ -1,3 +1,21 @@
+- name: persist network config
+  become: yes
+  shell: mv /run/systemd/network/*.network /etc/systemd/network
+  failed_when: no
+  register: mv_network
+  changed_when: mv_network.rc <= 0
+
+- name: avoid redoing vendor cloudinit
+  become: yes
+  command: >
+    chdir=/usr/share/oem
+    mv cloud-config.yml {{oem_backup}}
+    removes=cloud-config.yml creates={{oem_backup}}
+
+- name: avoid trashing future cloud-config
+  become: yes
+  copy: dest=/usr/share/oem/{{oem_backup}} force=no content=
+
 - become: yes
   template: src=update.conf dest=/etc/coreos/update.conf
 
