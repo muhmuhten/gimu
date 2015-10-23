@@ -1,4 +1,3 @@
 docker_btrfs_size: 20G
 docker_btrfs_path: /root/docker.btrfs
-docker_daemon: daemon
 docker_opts: --iptables=false --bip=10.9.3.3/16 --fixed-cidr=10.9.4.1/22

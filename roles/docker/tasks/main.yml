@@ -1,11 +1,3 @@
-- name: check docker version
-  command: docker --version
-  changed_when: no
-  register: docker_version
-
-- when: docker_version.stdout < "Docker version 1.8"
-  set_fact: docker_daemon=--daemon
-
 - name: copy docker service file
   become: yes
   template: src=docker.service dest=/etc/systemd/system/docker.service
