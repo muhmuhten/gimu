@@ -1,0 +1,35 @@
+- name: check swapfile existence
+  become: yes
+  stat: path={{swap_path}} get_checksum=no get_md5=no
+  register: swapfile
+
+- name: create swapfile
+  when: not swapfile.stat.exists
+  become: yes
+  command: >
+    dd if=/dev/zero of={{swap_path}} count={{swap_size}} bs=1M
+    creates={{swap_path}}
+
+- name: format swapfile
+  when: not swapfile.stat.exists
+  become: yes
+  command: mkswap {{swap_path}}
+
+- name: set swapfile perms
+  become: yes
+  file: path={{swap_path}} mode=600
+
+- name: add swapfile to fstab
+  become: yes
+  lineinfile:
+    dest: /etc/fstab
+    line: "{{swap_path}} none swap sw 0 0"
+  notify: enable swap
+
+- name: configure swappiness
+  become: yes
+  copy:
+    dest: /etc/sysctl.d/swappiness.conf
+    content: |
+      vm.swappiness = 10
+  notify: reload sysctl

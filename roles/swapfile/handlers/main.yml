@@ -1,0 +1,7 @@
+- name: enable swap
+  become: yes
+  command: swapon {{swap_path}}
+
+- name: reload sysctl
+  become: yes
+  command: sysctl --system
