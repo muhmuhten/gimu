@@ -19,6 +19,10 @@
   become: yes
   file: path={{swap_path}} mode=600
 
+- name: ensure fstab exists
+  become: yes
+  command: touch /etc/fstab creates=/etc/fstab
+
 - name: add swapfile to fstab
   become: yes
   lineinfile:

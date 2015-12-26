@@ -10,6 +10,7 @@
 
     - authorized_keys
     - coreos_config
+    - swapfile
 
     - locksmithd
     - iptables
