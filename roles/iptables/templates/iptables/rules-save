@@ -1,10 +1,12 @@
 #!/sbin/{{item}}-restore
 *nat
--A PREROUTING -i docker0 -j CONNMARK --or-mark 01
--A POSTROUTING ! -o docker0 -m connmark --mark 01/01 -j MASQUERADE
-{{nat_rules
-}}COMMIT
+-A PREROUTING -i docker0 -j CONNMARK --or-mark 1
+-4 -A PREROUTING -d {{ansible_default_ipv4.address}} -j CONNMARK --or-mark 2
+-6 -A PREROUTING -d {{ansible_default_ipv6.address}} -j CONNMARK --or-mark 2
+-A POSTROUTING ! -o docker0 -m connmark --mark 1/1 -j MASQUERADE
+{{nat_rules}}
+COMMIT
 
 *filter
-{{filter_rules
-}}COMMIT
+{{filter_rules}}
+COMMIT
