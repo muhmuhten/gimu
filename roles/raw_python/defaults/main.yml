@@ -1,2 +1,2 @@
 ansible_python_interpreter: /usr/bin/python
-pypy_version: 2.6.1
+pypy_version: 4.0.1
